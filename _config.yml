@@ -29,7 +29,8 @@ url: "tsebolai.com" # the base hostname & protocol for your site, e.g. http://ex
 twitter_username: blackuaman
 github_username:  thapz123
 resume_url: "Resume2022.pdf"
-author_name: Thapelo Sebolai
+linkedIn_url: "https://www.linkedin.com/in/thapelo-sebolai/"
+author_name: Thapelo
 
 # Build settings
 theme: dev-portfolio-blog
