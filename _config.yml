@@ -33,7 +33,7 @@ linkedIn_url: "https://www.linkedin.com/in/thapelo-sebolai/"
 author_name: Thapelo
 
 # Build settings
-theme: dev-portfolio-blog
+remote_theme: rohitjain00/dev-portfolio-blog
 plugins:
   - jekyll-feed
   - jekyll-minifier
