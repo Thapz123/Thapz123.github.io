@@ -37,6 +37,8 @@ theme: dev-portfolio-blog
 plugins:
   - jekyll-feed
   - jekyll-minifier
+  - jekyll-remote-theme
+  - jemoji
 
 # Exclude from processing.
 # The following items will not be processed, by default.
