@@ -2,8 +2,9 @@
 import { site } from '../data/site';
 
 const links = [
-  { href: '/', label: 'Home' },
+  { href: '/', label: 'Home', desktopOnly: true }, // the T.S logo is the home link on small screens
   { href: '/work/', label: 'Work' },
+  { href: '/studio/', label: 'Studio' },
   { href: '/about/', label: 'About' },
   { href: '/contact/', label: 'Contact' },
 ];
@@ -22,12 +23,12 @@ const path = Astro.url.pathname.replace(/\/?$/, '/');
         {links.map((l) => {
           const active = path === l.href;
           return (
-            <li>
+            <li class:list={[l.desktopOnly && 'max-sm:hidden']}>
               <a
                 href={l.href}
                 aria-current={active ? 'page' : undefined}
                 class:list={[
-                  'group relative flex items-center px-2 py-2 font-mono text-[10px] tracking-[0.16em] uppercase transition-colors sm:px-3 sm:text-[11px]',
+                  'group relative flex items-center px-1.5 py-2 font-mono text-[10px] tracking-[0.12em] uppercase transition-colors sm:px-3 sm:text-[11px] sm:tracking-[0.16em]',
                   active ? 'text-fg' : 'text-muted hover:text-fg',
                 ]}
               >

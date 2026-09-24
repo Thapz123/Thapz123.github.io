@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master]
+  # Weekly rebuild so new tndrheaded releases (fetched from Apple's catalog at build time) show up on /studio/.
+  schedule:
+    - cron: "0 14 * * 1"
   workflow_dispatch:
 
 permissions:

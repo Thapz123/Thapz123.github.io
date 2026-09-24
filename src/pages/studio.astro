@@ -1,0 +1,207 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ProjectFeature from '../components/ProjectFeature.astro';
+import { artist } from '../data/music';
+import { projects, site } from '../data/site';
+import { getReleases } from '../lib/releases';
+import { getPinnedVideos } from '../lib/tiktok';
+
+const [releases, videos] = await Promise.all([getReleases(), getPinnedVideos()]);
+const fmtDate = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+---
+
+<Base title="Studio" description={`Side projects and music by ${site.name}.`}>
+  <section class="mx-auto max-w-6xl px-4 pt-36 pb-20 sm:px-6 sm:pt-44">
+    <p class="eyebrow text-moss" data-reveal>Studio / Off the clock</p>
+    <h1 class="display mt-5 text-6xl sm:text-8xl" data-split>Made on the side.</h1>
+    <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted" data-reveal>
+      The things I build and the music I make when nobody’s asking me to.
+    </p>
+    <nav class="mt-10 flex flex-wrap gap-2" aria-label="Studio sections" data-reveal>
+      <a href="#projects" class="rounded-full border border-line px-4 py-2 font-mono text-[11px] tracking-[0.14em] uppercase transition-colors hover:border-fg">01 Projects</a>
+      <a href="#music" class="rounded-full border border-line px-4 py-2 font-mono text-[11px] tracking-[0.14em] uppercase transition-colors hover:border-fg">02 Music</a>
+    </nav>
+  </section>
+
+  <!-- 01 Projects -->
+  <section class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-28 sm:px-6" id="projects" aria-labelledby="projects-title">
+    <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t border-fg pt-6">
+      <div>
+        <p class="eyebrow text-moss" data-reveal>01</p>
+        <h2 id="projects-title" class="display mt-3 text-5xl sm:text-7xl" data-split>Projects.</h2>
+      </div>
+      <p class="eyebrow" data-reveal>{plural(projects.length, 'project')}</p>
+    </header>
+    <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted" data-reveal>I build the tools I wish existed.</p>
+    <div class="mt-10 space-y-8">
+      {projects.map((project) => <ProjectFeature project={project} />)}
+    </div>
+  </section>
+
+  <!-- 02 Music -->
+  <section class="mx-auto max-w-6xl scroll-mt-24 px-4 pb-32 sm:px-6" id="music" aria-labelledby="music-title">
+    <header class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t border-fg pt-6">
+      <div>
+        <p class="eyebrow text-moss" data-reveal>02</p>
+        <h2 id="music-title" class="display mt-3 text-5xl sm:text-7xl" data-split>Music.</h2>
+      </div>
+      <p class="eyebrow" data-reveal>{artist.genre}</p>
+    </header>
+    <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted" data-reveal>
+      Music I produce, play and sing under the name <span class="text-fg">{artist.name}</span>.
+    </p>
+    <ul class="mt-6 flex flex-wrap gap-2" aria-label={`${artist.name} on streaming and social`} data-reveal>
+      {artist.profiles.map((p) => (
+        <li>
+          <a href={p.href} target="_blank" rel="noopener" data-magnetic
+            class="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 font-mono text-[11px] tracking-[0.14em] uppercase transition-colors hover:border-fg">
+            {p.label} <Icon name="arrow" class="size-3" />
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Releases -->
+    <div class="mt-10 rounded-3xl border border-line bg-raised/40 p-6 sm:p-10" role="group" aria-labelledby="releases-title">
+      <div class="flex items-baseline justify-between gap-4">
+        <h3 id="releases-title" class="display text-3xl sm:text-4xl" data-reveal>Releases</h3>
+        <p class="eyebrow" data-reveal>{plural(releases.length, 'release')}</p>
+      </div>
+      {releases.length > 0 ? (
+        <ul class="mt-8 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3" aria-label="Releases">
+          {releases.map((r) => {
+            const preview = r.tracks.find((t) => t.previewUrl);
+            return (
+              <li class="group" data-reveal>
+                <div class="relative overflow-hidden rounded-2xl bg-raised">
+                  <Image src={r.artwork} alt={`${r.title} cover art`} width={600} height={600} format="webp"
+                    class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                  {preview && (
+                    <button type="button" data-preview={preview.previewUrl}
+                      class="absolute right-4 bottom-4 grid size-14 place-items-center rounded-full bg-bg/85 text-fg shadow-lg backdrop-blur transition-transform hover:scale-105"
+                      aria-label={`Play a 30-second preview of ${preview.title}`}>
+                      <svg class="play-icon size-5 translate-x-px" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>
+                      <span class="pause-icon eq hidden h-5 items-end gap-[3px] text-moss" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                      <svg class="pointer-events-none absolute inset-0 size-14 -rotate-90" viewBox="0 0 56 56" aria-hidden="true">
+                        <circle cx="28" cy="28" r="26" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="163.4" stroke-dashoffset="163.4" stroke-linecap="round" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+                <p class="eyebrow mt-4">{r.kind} <span class="text-moss">·</span> {fmtDate(r.date)}</p>
+                <h4 class="display mt-1 text-2xl">{r.title}</h4>
+                <a href={r.listenUrl} target="_blank" rel="noopener"
+                  class="mt-3 inline-flex items-center gap-2 rounded-full bg-fg px-4 py-2 font-mono text-[11px] tracking-[0.14em] text-bg uppercase transition-colors hover:bg-accent hover:text-accent-ink">
+                  {r.hasPromolink ? 'Listen anywhere' : 'Listen on Apple Music'} <Icon name="arrow" class="size-3" />
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p class="mt-6 text-muted">New music is on its way.</p>
+      )}
+    </div>
+
+    <!-- Pinned on TikTok -->
+    <div class="mt-6 rounded-3xl border border-line bg-raised/40 p-6 sm:p-10" role="group" aria-labelledby="tiktok-title">
+      <div class="flex flex-wrap items-baseline justify-between gap-4">
+        <h3 id="tiktok-title" class="display text-3xl sm:text-4xl" data-reveal>Pinned on TikTok</h3>
+        <a href={artist.tiktok} target="_blank" rel="noopener" class="eyebrow transition-colors hover:text-fg" data-reveal>@{artist.name} ↗</a>
+      </div>
+      {videos.length > 0 ? (
+        <ul class="mt-8 grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3" aria-label="Pinned TikTok videos">
+          {videos.map((v) => (
+            <li data-reveal>
+              <div class="relative aspect-[9/16] overflow-hidden rounded-2xl bg-fg" data-tiktok={v.id}>
+                <button type="button" class="group absolute inset-0 block w-full text-left"
+                  aria-label={`Play TikTok video${v.caption ? `: ${v.caption}` : ''}`}>
+                  {v.thumbnail && <img src={v.thumbnail} alt="" loading="lazy" decoding="async" class="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />}
+                  <span class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-black/0" aria-hidden="true"></span>
+                  <span class="absolute top-1/2 left-1/2 grid size-14 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-bg/85 text-fg shadow-lg backdrop-blur transition-transform group-hover:scale-105" aria-hidden="true">
+                    <svg class="size-5 translate-x-px" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z" /></svg>
+                  </span>
+                  {v.caption && <span class="absolute inset-x-3 bottom-3 line-clamp-2 text-sm leading-snug text-white">{v.caption}</span>}
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="mt-6 text-muted">
+          Snippets, sessions and works in progress live on
+          <a href={artist.tiktok} target="_blank" rel="noopener" class="text-fg underline decoration-line underline-offset-4 hover:decoration-fg">TikTok</a>.
+        </p>
+      )}
+    </div>
+  </section>
+</Base>
+
+<script>
+  // --- 30-second previews: one shared <audio>, a progress ring, nothing loaded until play. ---
+  let audio: HTMLAudioElement | null = null;
+  let current: HTMLButtonElement | null = null;
+
+  function setState(btn: HTMLButtonElement, playing: boolean) {
+    btn.querySelector('.play-icon')?.classList.toggle('hidden', playing);
+    btn.querySelector('.pause-icon')?.classList.toggle('hidden', !playing);
+    btn.querySelector('.pause-icon')?.classList.toggle('flex', playing);
+    btn.classList.toggle('is-playing', playing);
+    btn.setAttribute('aria-pressed', String(playing));
+  }
+  const ring = (btn: HTMLButtonElement, fraction: number) =>
+    btn.querySelector('circle')?.setAttribute('stroke-dashoffset', String(163.4 * (1 - fraction)));
+
+  // --- TikTok: a thumbnail until tapped, then TikTok's official embed player for that one video. ---
+  function playTikTok(box: HTMLElement) {
+    audio?.pause();
+    const frame = document.createElement('iframe');
+    frame.src = `https://www.tiktok.com/player/v1/${box.dataset.tiktok}?autoplay=1&description=1&music_info=1&rel=0`;
+    frame.title = 'TikTok video';
+    frame.allow = 'autoplay; fullscreen; encrypted-media; picture-in-picture';
+    frame.className = 'absolute inset-0 size-full border-0';
+    box.replaceChildren(frame);
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-preview]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (current === btn && audio && !audio.paused) return audio.pause();
+        if (current && current !== btn) {
+          setState(current, false);
+          ring(current, 0);
+        }
+        if (current !== btn || !audio) {
+          audio?.pause();
+          const a = (audio = new Audio(btn.dataset.preview));
+          const mine = btn;
+          a.addEventListener('timeupdate', () => ring(mine, a.currentTime / (a.duration || 30)));
+          a.addEventListener('pause', () => setState(mine, false));
+          a.addEventListener('play', () => setState(mine, true));
+          a.addEventListener('ended', () => ring(mine, 0));
+          current = btn;
+        }
+        audio.play();
+      });
+    });
+    document.querySelectorAll<HTMLElement>('[data-tiktok]').forEach((box) => {
+      box.querySelector('button')?.addEventListener('click', () => playTikTok(box));
+    });
+  });
+
+  document.addEventListener('astro:before-swap', () => {
+    audio?.pause();
+    audio = null;
+    current = null;
+  });
+</script>
+
+<style>
+  [data-preview].is-playing .eq span { animation: eq 0.9s ease-in-out infinite alternate; }
+  [data-preview].is-playing .eq span:nth-child(2) { animation-delay: -0.3s; }
+  [data-preview].is-playing .eq span:nth-child(3) { animation-delay: -0.6s; }
+  [data-preview].is-playing .eq span:nth-child(4) { animation-delay: -0.15s; }
+</style>

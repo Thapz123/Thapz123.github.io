@@ -8,12 +8,12 @@ interface Props {
 const { project: p } = Astro.props;
 ---
 
-<article id={p.slug} class="scroll-mt-24">
-  <div class="grid gap-14 border-t border-line pt-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16">
+<article id={p.slug} class="scroll-mt-24 rounded-3xl border border-line bg-raised/40 p-6 sm:p-10">
+  <div class="grid gap-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16">
     <div>
       <p class="eyebrow" data-reveal>{p.year} <span class="text-moss">·</span> {p.kind}</p>
-      <h3 class="display mt-4 text-5xl sm:text-6xl" data-reveal>{p.title}</h3>
-      <p class="mt-5 max-w-xl text-xl leading-snug text-umber sm:text-2xl" data-reveal>{p.tagline}</p>
+      <h3 class="display mt-3 text-4xl sm:text-5xl" data-reveal>{p.title}</h3>
+      <p class="mt-4 max-w-xl text-lg leading-snug text-umber sm:text-xl" data-reveal>{p.tagline}</p>
       <div class="mt-6 flex flex-wrap items-center gap-3" data-reveal>
         {p.links.map((l) => (
           <a
@@ -79,7 +79,7 @@ const { project: p } = Astro.props;
       <p class="mt-4 text-center font-mono text-[11px] tracking-[0.1em] text-muted">One new word per card; every other word is already known.</p>
     </div>
   </div>
-  <p class="mt-12 border-t border-line pt-5 font-mono text-[11px] leading-relaxed tracking-[0.1em] text-muted uppercase" data-reveal>
+  <p class="mt-10 border-t border-line pt-5 font-mono text-[11px] leading-relaxed tracking-[0.1em] text-muted uppercase" data-reveal>
     Built with {p.stack.map((s, i) => <>{i > 0 && <span class="text-moss" aria-hidden="true"> · </span>}<span>{s}</span></>)}
   </p>
 </article>

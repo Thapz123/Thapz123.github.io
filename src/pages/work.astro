@@ -1,10 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
-import ProjectFeature from '../components/ProjectFeature.astro';
-import { experience, education, projects, site } from '../data/site';
+import { experience, education, site } from '../data/site';
 ---
 
-<Base title="Work" description={`${site.name}'s working history at Superscript, Meta, Slack and Stanford, plus side projects.`}>
+<Base title="Work" description={`${site.name}'s working history at Superscript, Meta, Slack and Stanford.`}>
   <section class="mx-auto max-w-6xl px-4 pt-36 pb-16 sm:px-6 sm:pt-44">
     <p class="eyebrow text-moss" data-reveal>Work / Résumé / Timeline</p>
     <h1 class="display mt-5 text-6xl sm:text-8xl" data-split>A working history.</h1>
@@ -14,7 +13,7 @@ import { experience, education, projects, site } from '../data/site';
     </p>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 pb-24 sm:px-6" aria-label="Timeline">
+  <section class="mx-auto max-w-6xl px-4 pb-16 sm:px-6" aria-label="Timeline">
     <ol class="relative ml-2 sm:ml-40" data-timeline>
       <span class="absolute top-2 bottom-0 left-0 w-px bg-line" aria-hidden="true"></span>
       <span class="absolute top-2 bottom-0 left-0 w-px origin-top bg-moss" data-timeline-progress aria-hidden="true"></span>
@@ -67,17 +66,8 @@ import { experience, education, projects, site } from '../data/site';
 
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 pb-32 sm:px-6" id="projects" aria-labelledby="projects-title">
-    <p class="eyebrow text-moss" data-reveal>Side builds</p>
-    <h2 id="projects-title" class="display mt-5 text-5xl sm:text-7xl" data-split>Projects.</h2>
-    <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted" data-reveal>
-      I build the tools I wish existed.
-    </p>
-    <div class="mt-14 space-y-24">
-      {projects.map((project) => <ProjectFeature project={project} />)}
-    </div>
-
-    <div class="mt-24 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8" data-reveal>
+  <section class="mx-auto max-w-6xl px-4 pb-32 sm:px-6">
+    <div class="flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8" data-reveal>
       <p class="display text-3xl sm:text-4xl">Want the full picture?</p>
       <a href={site.resume} target="_blank" rel="noopener" data-magnetic
         class="rounded-full bg-fg px-5 py-3 font-mono text-[11px] tracking-[0.16em] text-bg uppercase transition-colors hover:bg-accent hover:text-accent-ink">
