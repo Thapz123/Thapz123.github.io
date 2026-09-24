@@ -97,3 +97,25 @@ export const education = {
 };
 
 export const spokenLanguages = ['English', 'Afrikaans', 'French'];
+
+export const projects = [
+  {
+    slug: 'agentic-anki',
+    title: 'Agentic Anki',
+    year: '2026',
+    kind: 'Web app · AI',
+    tagline: 'A language coach that turns your goals into Anki decks you can actually read.',
+    description: [
+      'Tell the coach why you’re learning Spanish and how much time you have. It proposes a curriculum built from the most common words, and once you approve it, decks build in the background, ready to import into Anki.',
+      'Every card teaches exactly one new word, in a sentence where every other word is one you already know. That rule is enforced by a validator rather than a prompt: sentences that break it go back to Claude to rewrite. Each word also gets a keyword mnemonic (an English sound-alike woven into an absurd illustrated scene), native-speaker audio and a link to real clips of it in use.',
+    ],
+    highlights: [
+      'Chat-driven agent loop: the coach plans the curriculum, then revises cards on request, re-validating every edit before it applies.',
+      'Runs entirely in the browser: no server and no accounts. You bring your own API keys, which only ever go to Anthropic and OpenAI.',
+      'Builds real .apkg files client-side with SQLite compiled to WebAssembly, verified by importing them with Anki’s own library.',
+      'Cards are written in parallel batches that share a cached prompt, cutting repeat input cost.',
+    ],
+    stack: ['Claude API', 'OpenAI images & speech', 'JavaScript', 'WebAssembly', 'IndexedDB', 'Python'],
+    links: [{ label: 'Try it', href: 'https://tsebolai.com/agentic-anki/' }],
+  },
+];
