@@ -1,0 +1,13 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="border-t border-line">
+  <div class="eyebrow mx-auto flex max-w-6xl flex-col gap-3 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <p>© {new Date().getFullYear()} {site.name}</p>
+    <p>
+      {site.location} <span class="text-moss">·</span>
+      <time data-clock class="text-fg tabular-nums">--:--</time> ET
+    </p>
+  </div>
+</footer>

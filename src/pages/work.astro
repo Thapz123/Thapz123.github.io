@@ -1,0 +1,75 @@
+---
+import Base from '../layouts/Base.astro';
+import { experience, education, site } from '../data/site';
+---
+
+<Base title="Work" description={`${site.name}'s working history at Superscript, Meta, Slack and Stanford.`}>
+  <section class="mx-auto max-w-6xl px-4 pt-36 pb-16 sm:px-6 sm:pt-44">
+    <p class="eyebrow text-moss" data-reveal>Work / Résumé / Timeline</p>
+    <h1 class="display mt-5 text-6xl sm:text-8xl" data-split>A working history.</h1>
+    <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted" data-reveal>
+      Six years across big tech and a fast-growing healthcare startup, building backend systems, ML pipelines and the
+      platforms that move money.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-32 sm:px-6" aria-label="Timeline">
+    <ol class="relative ml-2 sm:ml-40" data-timeline>
+      <span class="absolute top-2 bottom-0 left-0 w-px bg-line" aria-hidden="true"></span>
+      <span class="absolute top-2 bottom-0 left-0 w-px origin-top bg-moss" data-timeline-progress aria-hidden="true"></span>
+
+      {experience.map((job) => (
+        <li class="relative pb-20 pl-10 sm:pl-14" data-timeline-item>
+          <span
+            class="absolute top-1.5 -left-[9px] size-[19px] rounded-full border border-line bg-bg transition-colors duration-500"
+            data-node
+            aria-hidden="true"
+          >
+            <span class="absolute inset-[5px] scale-0 rounded-full bg-accent transition-transform duration-500" data-node-dot></span>
+          </span>
+
+          <p class="eyebrow sm:absolute sm:top-1.5 sm:-left-40 sm:w-32 sm:text-right" data-reveal>{job.period}</p>
+          <div data-reveal>
+            <h2 class="display mt-2 text-4xl sm:mt-0 sm:text-5xl">{job.company}</h2>
+            <p class="mt-2 text-muted">
+              {job.role} <span class="text-moss">·</span> {job.place}
+            </p>
+            <p class="eyebrow mt-3 text-umber">{job.note}</p>
+          </div>
+          {job.groups.map((g) => (
+            <div class="mt-6 max-w-2xl">
+              {g.title && <p class="eyebrow mb-3 text-moss" data-reveal>{g.title}</p>}
+              <ul class="space-y-3">
+                {g.points.map((p) => (
+                  <li class="flex gap-3 leading-relaxed" data-reveal>
+                    <span class="mt-[0.7em] h-px w-4 shrink-0 bg-muted" aria-hidden="true" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </li>
+      ))}
+
+      <li class="relative pl-10 sm:pl-14" data-timeline-item>
+        <span class="absolute top-1.5 -left-[9px] size-[19px] rounded-full border border-line bg-bg" data-node aria-hidden="true">
+          <span class="absolute inset-[5px] scale-0 rounded-full bg-accent transition-transform duration-500" data-node-dot></span>
+        </span>
+        <p class="eyebrow sm:absolute sm:top-1.5 sm:-left-40 sm:w-32 sm:text-right" data-reveal>{education.period}</p>
+        <div data-reveal>
+          <h2 class="display mt-2 text-4xl sm:mt-0 sm:text-5xl">{education.school}</h2>
+          <p class="mt-2 text-muted">{education.degree}</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="mt-24 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8" data-reveal>
+      <p class="display text-3xl sm:text-4xl">Want the full picture?</p>
+      <a href={site.resume} target="_blank" rel="noopener" data-magnetic
+        class="rounded-full bg-fg px-5 py-3 font-mono text-[11px] tracking-[0.16em] text-bg uppercase transition-colors hover:bg-accent hover:text-accent-ink">
+        Download résumé ↗
+      </a>
+    </div>
+  </section>
+</Base>

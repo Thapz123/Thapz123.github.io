@@ -1,0 +1,60 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title, description = site.tagline } = Astro.props;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.role}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/profile_pic.png', Astro.site)} />
+    <meta name="twitter:card" content="summary" />
+    <script is:inline>
+      // Runs before paint (and again after each client-side navigation) so the theme never flashes.
+      (() => {
+        const apply = (doc) => {
+          let theme;
+          try { theme = localStorage.getItem('theme'); } catch {}
+          // Light by default; dark only if the visitor has chosen it with the toggle.
+          if (theme !== 'dark') theme = 'light';
+          doc.documentElement.dataset.theme = theme;
+          doc.documentElement.classList.add('js');
+        };
+        apply(document);
+        document.addEventListener('astro:before-swap', (e) => apply(e.newDocument));
+      })();
+    </script>
+    <ClientRouter />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <div class="grain" aria-hidden="true"></div>
+    <Nav />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

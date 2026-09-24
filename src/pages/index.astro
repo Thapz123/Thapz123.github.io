@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+
+<Base>
+  <section class="relative isolate flex min-h-svh items-center overflow-hidden pt-16">
+    <canvas
+      data-waveform
+      class="pointer-events-none absolute inset-0 -z-10 size-full [mask-image:linear-gradient(to_right,transparent_30%,black_70%)] max-md:[mask-image:linear-gradient(to_bottom,transparent_40%,black_85%)]"
+      aria-hidden="true"
+    ></canvas>
+
+    <div class="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6">
+      <p class="eyebrow text-moss" data-reveal>{site.role} <span class="text-muted">·</span> {site.location}</p>
+
+      <h1 class="display mt-6 text-[clamp(4.5rem,15vw,11.5rem)]" aria-label={site.name}>
+        <span class="block" data-split aria-hidden="true">{site.firstName}</span>
+        <span class="block italic text-umber" data-split aria-hidden="true">{site.lastName}</span>
+      </h1>
+
+      <p class="mt-8 max-w-xl text-lg leading-relaxed text-muted sm:text-xl" data-reveal>
+        I build distributed backend systems, ML infrastructure and payment platforms. Most recently
+        that meant healthcare payments, and before that, music at Meta.
+      </p>
+
+      <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal>
+        <a href={site.links.github} target="_blank" rel="noopener" aria-label="GitHub" data-magnetic
+          class="grid size-11 place-items-center rounded-full border border-line transition-colors hover:border-fg">
+          <Icon name="github" />
+        </a>
+        <a href={site.links.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn" data-magnetic
+          class="grid size-11 place-items-center rounded-full border border-line transition-colors hover:border-fg">
+          <Icon name="linkedin" />
+        </a>
+        <a href="/work/" data-magnetic
+          class="ml-2 rounded-full bg-fg px-5 py-3 font-mono text-[11px] tracking-[0.16em] text-bg uppercase transition-colors hover:bg-accent hover:text-accent-ink">
+          See my work
+        </a>
+        <a href="/contact/" class="group px-3 py-3 font-mono text-[11px] tracking-[0.16em] uppercase">
+          Get in touch
+          <span class="inline-block transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+        </a>
+      </div>
+
+      <div class="mt-16 max-w-xl border-t border-line pt-5" data-reveal>
+        <p class="eyebrow">
+          Previously at Superscript <span class="text-moss">·</span> Meta <span class="text-moss">·</span> Slack
+          <span class="text-moss">·</span> Stanford
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

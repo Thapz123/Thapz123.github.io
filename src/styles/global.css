@@ -1,0 +1,161 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+:root {
+  /* Earth tones: linen, forest ink, moss and umber, plus a single marigold accent.
+     Marigold is too light for text on linen, so use it for fills/markers only. */
+  --bg: #ede6d6;
+  --bg-raised: #e3dac6;
+  --fg: #1f261c;
+  --muted: #655f4e;
+  --line: #d2c7af;
+  --moss: #48633a;
+  --umber: #7a4f2e;
+  --accent: #e0a31c;
+  --accent-ink: #1f261c;
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg: #11150f;
+  --bg-raised: #1a2017;
+  --fg: #ebe4d2;
+  --muted: #9c9784;
+  --line: #2b3326;
+  --moss: #9bb57e;
+  --umber: #c2966b;
+  --accent: #e9b440;
+  --accent-ink: #1f261c;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-raised: var(--bg-raised);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-moss: var(--moss);
+  --color-umber: var(--umber);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+}
+
+html {
+  background: var(--bg);
+  transition: background-color 0.4s, color 0.4s;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--bg);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Film grain overlay */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: -50%;
+  z-index: 60;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-5%, 3%); }
+  40% { transform: translate(3%, -6%); }
+  60% { transform: translate(-7%, 2%); }
+  80% { transform: translate(4%, 5%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Elements hidden until GSAP reveals them (only when JS + motion are available) */
+.js [data-reveal] { opacity: 0; }
+.js [data-split] { visibility: hidden; }
+
+/* SplitText line masks: a little breathing room so italic overhangs and descenders aren't clipped */
+.split-line-mask {
+  padding: 0 0.1em 0.12em;
+  margin: 0 -0.1em -0.12em;
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 0.95;
+  }
+}
+
+/* Page cross-fade (Astro ClientRouter) */
+::view-transition-old(root) { animation: 0.35s ease both vt-out; }
+::view-transition-new(root) { animation: 0.5s ease both vt-in; }
+@keyframes vt-out { to { opacity: 0; filter: blur(6px); } }
+@keyframes vt-in { from { opacity: 0; filter: blur(6px); transform: translateY(12px); } }
+
+/* Theme toggle: circular reveal from the button */
+.theme-vt::view-transition-old(root) { animation: none; }
+.theme-vt::view-transition-new(root) { animation: 0.7s cubic-bezier(0.7, 0, 0.3, 1) both theme-reveal; }
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x) var(--vt-y)); }
+  to { clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y)); }
+}
+
+/* Equalizer bars used on hover cards */
+.eq span {
+  display: block;
+  width: 3px;
+  height: 100%;
+  background: currentColor;
+  border-radius: 2px;
+  transform-origin: bottom;
+  transform: scaleY(0.25);
+  transition: transform 0.3s;
+}
+.group:hover .eq span { animation: eq 0.9s ease-in-out infinite alternate; }
+.group:hover .eq span:nth-child(2) { animation-delay: -0.3s; }
+.group:hover .eq span:nth-child(3) { animation-delay: -0.6s; }
+.group:hover .eq span:nth-child(4) { animation-delay: -0.15s; }
+@keyframes eq {
+  from { transform: scaleY(0.2); }
+  to { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain, .group:hover .eq span { animation: none; }
+  .js [data-reveal] { opacity: 1; }
+  .js [data-split] { visibility: visible; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
