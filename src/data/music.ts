@@ -28,5 +28,5 @@ export const tiktokPinned: string[] = [
  * (the number at the end of the album's music.apple.com URL). Releases without one link to Apple Music.
  */
 export const promolinks: Record<number, string> = {
-  // 1848738640: 'https://…', // Cursed Existence
+  1848738640: 'https://artists.landr.com/057829911109', // Cursed Existence
 };
